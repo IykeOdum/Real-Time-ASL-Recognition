@@ -1,0 +1,49 @@
+# ---------- Data (never commit datasets) ----------
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.zip
+*.mp4
+*.avi
+*.mov
+
+# ---------- Secrets / credentials ----------
+.env
+kaggle.json
+.kaggle/
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---------- Virtual environments ----------
+.venv/
+venv/
+env/
+
+# ---------- Notebooks ----------
+.ipynb_checkpoints/
+
+# ---------- Saved models / large artifacts ----------
+# Figures and metrics ARE committed; model files are not by default.
+results/models/*
+!results/models/.gitkeep
+*.joblib
+*.pkl
+*.pt
+*.pth
+*.h5
+*.keras
+
+# ---------- OS / editor ----------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

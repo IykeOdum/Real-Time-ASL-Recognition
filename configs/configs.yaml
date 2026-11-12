@@ -1,0 +1,95 @@
+# Central project configuration. Everyone runs from this file so that
+# splits and results are reproducible across the team.
+
+project:
+  name: asl-sign-classifier
+  seed: 42
+
+# ---------------------------------------------------------------------------
+# Datasets. Change `active` to switch which one the scripts use.
+# ---------------------------------------------------------------------------
+dataset:
+  active: mendeley_hand_signs   # sign_mnist | mendeley_hand_signs
+
+  sources:
+    sign_mnist:
+      # Kaggle: pip install kaggle, then
+      #   kaggle datasets download -d datamunge/sign-language-mnist -p data/raw/sign_mnist --unzip
+      kaggle_slug: datamunge/sign-language-mnist
+      raw_dir: data/raw/sign_mnist
+      format: csv                       # first column = label, then 784 pixel columns
+      train_file: sign_mnist_train.csv
+      test_file: sign_mnist_test.csv
+      native_image_size: [28, 28]       # grayscale
+      # Labels are alphabet indices (A=0 ... Y=24). J (9) and Z (25) do not appear.
+      label_encoding: alphabet_index
+
+    mendeley_hand_signs:
+      # Manual download: https://data.mendeley.com/datasets/37p5dgwsk4/1 ("Download All"),
+      # then extract so each sign has its own folder inside raw_dir.
+      raw_dir: data/raw/mendeley_hand_signs
+      format: image_folders             # one folder per sign, ~600 images each
+      native_image_size: [300, 300]
+      image_extensions: [".jpg", ".jpeg", ".png"]
+      # Check the real folder names after extracting and edit `classes` below to match.
+
+# ---------------------------------------------------------------------------
+# Which signs to classify (start with 5-10 visually distinct, static signs)
+# ---------------------------------------------------------------------------
+classes: ["A", "B", "C", "L", "V", "W", "Y"]
+# Later, to test harder cases, try confusable letters, e.g. ["A", "M", "N", "S", "T"]
+
+# ---------------------------------------------------------------------------
+# Preprocessing
+# ---------------------------------------------------------------------------
+preprocessing:
+  grayscale: true
+  image_size: [28, 28]        # resize target so both datasets share the same input shape
+  scale_pixels: true          # divide by 255 -> values in [0, 1]
+  flatten_for_classical: true # KNN / SVM take flat vectors
+
+# ---------------------------------------------------------------------------
+# Train / validation / test splits
+# ---------------------------------------------------------------------------
+split:
+  test_size: 0.20
+  val_size: 0.10
+  stratify: true
+  # sign_mnist ships with its own test CSV; use it as the held-out test set
+  use_predefined_test_if_available: true
+
+# ---------------------------------------------------------------------------
+# Models to compare
+# ---------------------------------------------------------------------------
+models:
+  baseline:
+    strategy: most_frequent   # majority-class dummy classifier
+  knn:
+    n_neighbors: [1, 3, 5, 7]
+    weights: distance
+  svm:
+    kernel: rbf
+    C: [1, 10]
+    gamma: scale
+  mlp:                        # scikit-learn MLP; swap for PyTorch later if needed
+    hidden_layer_sizes: [128, 64]
+    max_iter: 200
+    early_stopping: true
+
+# ---------------------------------------------------------------------------
+# Evaluation
+# ---------------------------------------------------------------------------
+evaluation:
+  metrics: [accuracy, precision, recall, f1]
+  average: macro
+  confusion_matrix: true
+  cv_folds: 5
+
+# ---------------------------------------------------------------------------
+# Output locations
+# ---------------------------------------------------------------------------
+paths:
+  processed: data/processed
+  figures: results/figures
+  metrics: results/metrics
+  models: results/models
