@@ -1,5 +1,6 @@
 # ---------- Data (never commit datasets) ----------
 data/raw/*
+data
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep

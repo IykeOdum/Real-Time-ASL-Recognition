@@ -1,0 +1,33 @@
+{
+  "dataset": "waseemnagahhenes/sign-language-dataset-wlasl-videos",
+  "selected_signs": [
+    "cousin",
+    "thin",
+    "before"
+  ],
+  "sample_positions": [
+    0.4,
+    0.5,
+    0.6
+  ],
+  "random_seed": 42,
+  "test_size": 0.25,
+  "k_neighbors": 1,
+  "k_candidates": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "cv_folds": 4,
+  "cv_mean_accuracy_best_k": 0.7777777777777778,
+  "feature_count": 126,
+  "feature_method": "wrist-relative, x/y-scaled, up to 2 hands, one sampled frame",
+  "note": "video-held-out evaluation only; signer identities unavailable"
+}

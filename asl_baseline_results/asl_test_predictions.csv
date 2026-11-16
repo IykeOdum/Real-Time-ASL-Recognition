@@ -1,0 +1,13 @@
+video_id,actual_sign,predicted_sign,correct
+65415,cousin,cousin,True
+05750,before,before,True
+57943,thin,thin,True
+05731,before,before,True
+57953,thin,thin,True
+13638,cousin,cousin,True
+13648,cousin,cousin,True
+13640,cousin,cousin,True
+05739,before,before,True
+57936,thin,thin,True
+05741,before,before,True
+57940,thin,thin,True
